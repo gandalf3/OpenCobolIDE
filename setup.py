@@ -51,10 +51,10 @@ with open('README.rst', 'r') as readme:
 
 
 data_files = []
-if sys.platform == 'linux':
-    data_files.append(('/usr/share/applications',
-                       ['share/OpenCobolIDE.desktop']))
-    data_files.append(('/usr/share/pixmaps', ['share/OpenCobolIDE.png']))
+# if sys.platform == 'linux':
+    # data_files.append(('/usr/share/applications',
+    #                   ['share/OpenCobolIDE.desktop']))
+    # data_files.append(('/usr/share/pixmaps', ['share/OpenCobolIDE.png']))
 
 
 if 'bdist_wheel' in sys.argv:
