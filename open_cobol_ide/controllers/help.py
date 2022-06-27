@@ -3,8 +3,6 @@ from open_cobol_ide.settings import Settings
 from open_cobol_ide.view.dialogs.about import DlgAbout
 from .base import Controller
 
-import qcrash.api as qcrash
-
 
 class HelpController(Controller):
     """
@@ -18,7 +16,6 @@ class HelpController(Controller):
         self.ui.actionHelp.triggered.connect(self.show_help_contents)
         self.ui.actionAbout.triggered.connect(self.show_about_dlg)
         self.ui.btAbout.clicked.connect(self.show_about_dlg)
-        self.ui.actionReport_a_bug.triggered.connect(self.report_bug)
         self.ui.actionRestore_factory_defaults.triggered.connect(
             self.restore_factory_defaults)
 
@@ -34,11 +31,6 @@ class HelpController(Controller):
         """
         dlg = DlgAbout(self.main_window)
         dlg.exec_()
-
-    def report_bug(self):
-        qcrash.show_report_dialog(
-            window_icon=self.main_window.windowIcon(),
-            parent=self.main_window, include_log=False, include_sys_info=False)
 
     def restore_factory_defaults(self):
         answer = QtWidgets.QMessageBox.question(

@@ -220,8 +220,6 @@ class ViewController(Controller):
         self.ui.stackedWidget.setCurrentIndex(int(page))
         if page == Page.HOME:
             self.main_window.save_state()
-            if not system.ubuntu:
-                self.ui.menuBar.hide()
             self.ui.statusbar.hide()
             self.ui.toolBarCOBOL.hide()
             self.ui.toolBarFile.hide()
@@ -249,14 +247,10 @@ class ViewController(Controller):
         TODO
         """
         if self._perspective == 'default':
-            if not system.ubuntu:
-                self.ui.menuBar.show()
             self.ui.statusbar.show()
             self.ui.toolBarFile.show()
             self.ui.toolBarCOBOL.show()
         else:
-            if not system.ubuntu:
-                self.ui.menuBar.hide()
             self.ui.statusbar.hide()
             self.ui.toolBarCOBOL.hide()
             self.ui.toolBarFile.hide()

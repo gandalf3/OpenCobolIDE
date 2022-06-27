@@ -15,10 +15,6 @@ from pyqode.qt import QtGui
 windows = platform.system() == 'Windows'
 darwin = platform.system() == 'Darwin'
 linux = platform.system() == 'Linux'
-if linux:
-    ubuntu = platform.linux_distribution()[0].lower() == 'ubuntu'
-else:
-    ubuntu = False
 
 
 def _mkdir(func):
@@ -166,21 +162,10 @@ def get_system_infos():
     else:
         qdarkstyle_version = qdarkstyle.__version__
 
-    def get_linux_distro():
-        try:
-            out = str(subprocess.check_output(['lsb_release', '-i']),
-                      locale.getpreferredencoding())
-        except OSError:
-            distro = platform.linux_distribution()[0]
-            if not distro:
-                distro = 'linux distribution not found'
-        else:
-            distro = out.split(':')[1].strip()
-        return distro
 
     system_info = platform.system()
     if 'linux' in sys.platform.lower():
-        system_info = get_linux_distro()
+        system_info = "Linux"
     elif 'darwin' in sys.platform.lower():
         system_info = 'Mac OS X %s' % platform.mac_ver()[0]
     return '\n'.join([

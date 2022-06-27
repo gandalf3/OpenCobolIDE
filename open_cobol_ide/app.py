@@ -11,7 +11,6 @@ import mimetypes
 import os
 import sys
 from pyqode.qt import QtCore, QtWidgets, QT_API, PYQT5_API, PYSIDE_API
-import qcrash.api as qcrash
 
 from open_cobol_ide import __version__, logger, system
 from open_cobol_ide.controllers import (
@@ -31,10 +30,6 @@ def _logger():
 
 _original_env = os.environ.copy()
 
-
-QCRASH_GH_OWNER = 'OpenCobolIDE'
-QCRASH_GH_REPO = 'OpenCobolIDE'
-QCRASH_EMAIL = 'colin.duquesnoy@gmail.com'
 
 
 class Application(QtCore.QObject):
@@ -56,13 +51,6 @@ class Application(QtCore.QObject):
         self.app = QtWidgets.QApplication(sys.argv)
 
         self._reported_tracebacks = []
-        qcrash.get_system_information = system.get_system_infos
-        qcrash.get_application_log = logger.get_application_log
-        qcrash.install_backend(
-            qcrash.backends.GithubBackend(QCRASH_GH_OWNER, QCRASH_GH_REPO),
-            qcrash.backends.EmailBackend(QCRASH_EMAIL, 'OpenCobolIDE'))
-        qcrash.set_qsettings(Settings()._settings)
-        qcrash.install_except_hook(except_hook=self._report_exception)
         # if hasattr(sys, 'frozen') and sys.platform == 'win32':
         #     sys.stdout = open(os.path.join(system.get_cache_directory(),
         #                                    'ocide_stdout.log'), 'w')
@@ -281,16 +269,10 @@ class Application(QtCore.QObject):
             self._reported_tracebacks.append(_tb)
             title = '[Unhandled exception] %s' % exc.__class__.__name__
             description = 'An unhandled exception has occured:\n\n'\
-                          '%s\n\nWould you like to send a bug report to the ' \
-                          'development team?' % tb
+                          '%s' % tb
             answer = QtWidgets.QMessageBox.critical(
                 self.win, title, description,
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                 QtWidgets.QMessageBox.Yes)
-            if answer == QtWidgets.QMessageBox.Yes:
-                qcrash.show_report_dialog(
-                    parent=self.win, window_icon=self.win.windowIcon(),
-                    window_title="Report unhandled exception",
-                    issue_title=title, traceback=tb)
         except Exception:
             _logger().exception('exception in excepthook')
